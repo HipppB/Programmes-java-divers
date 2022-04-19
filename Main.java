@@ -17,12 +17,12 @@ public class Main {
         // int[] myNum = {10, 20, 30, 40};
         // Homework.enlargeArray(myNum);
         //new TpNote();
-        Polynomial polynome = new Polynomial("x^4+3.x^2+4.x+3");
-        polynome.compute(8);
-        polynome.compute(20);
-        polynome.compute(0);
-
-
+        //Polynomial polynome = new Polynomial("5.x^5+4.x^3+20.x^2+x+1");
+        Polynomial polynome = new Polynomial("3.x^2-2.x");
+        System.out.println("x = 1 : " +polynome.compute(1));
+        System.out.println("x = -4 : " +polynome.compute(-4));
+        System.out.println("x = 0 : " +polynome.compute(0));
+        polynome.findRoot(-100, 100);
         //polynome.getPolynomial();
         //polynome.getPolynomialFactors();
     }

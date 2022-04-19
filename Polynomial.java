@@ -1,12 +1,20 @@
 
+import java.io.IOException;
 import java.util.Arrays;
 
 
 public class Polynomial {
     String polynomial;
-    public Polynomial(String polynomial) {
+    float[][] factors;
+     public Polynomial(String polynomial) {
         setPolynomial(polynomial);
-    }
+        try {
+            this.factors = getPolynomialFactors(this.polynomial);
+        } catch (NumberFormatException e) {
+            throw new NumberFormatException();
+        }
+
+     }
     public void getPolynomial() {
         System.out.println(this.polynomial);
     }
@@ -14,15 +22,37 @@ public class Polynomial {
         this.polynomial = polynomial;
     }
     public float compute(float x) {
-        float[][] factors = getPolynomialFactors(this.polynomial);
         float result = 0f;
-        for (int i = 0; i < factors.length; i++) {
-            result += factors[i][0] * Math.pow(x, factors[i][1]);
+        for (int i = 0; i < this.factors.length; i++) {
+            result += this.factors[i][0] * Math.pow(x, this.factors[i][1]);
         }
-        System.out.println(this.polynomial.replace("x", (String.valueOf(x))) + " = " + result);
-        return 0f;
+        //System.out.println(this.polynomial.replace("x", (String.valueOf(x))) + " = " + result);
+        return result;
     }
+    public float findRoot(float inter_start, float inter_end) throws IOException {
+        int maxTries = 100;
+        float tolerance = 0.02f;
+        float middle = 0;
+        while (maxTries > 0) {
+            middle = (inter_start+inter_end)/2;
+            if(compute(middle) == 0 || (inter_end - inter_start) / 2 < tolerance) {
+                System.out.println("RESULT " + middle);
+                return middle;
+            }
+            if (compute(middle) < 0 && compute(inter_end) > 0 || compute(middle) > 0 && compute(inter_end) < 0) {
+                inter_start = middle;
+            } else if (compute(middle) < 0 && compute(inter_start) > 0 || compute(middle) > 0 && compute(inter_start) < 0){
+                inter_end = middle;
+            } else {
+                throw new IOException("Cannot find any root between this interval (with this method).");
+            }
+            maxTries -= 1;
+        }
+        throw new IOException("No root precise enough found in this interval");
+    }
+
     private float[][] getPolynomialFactors(String polynomial) {
+        polynomial = polynomial.replace("-", "+-");
         String[] arrayOfStr = polynomial.split("\\+"); // We separate the different terms
         // Our goal is to obtain a double array of floats in the form [ [factor, power], [factor2, power2] ...]
         // The main array will be the same length as arrayOfStr and each sub array of length 2
@@ -58,12 +88,11 @@ public class Polynomial {
             terms[i][1] = tempTerms[1];
 
         }
-        //System.out.println(polynomial + " was transormed to :" ); //Checking
-        //for (float[] term: terms) {
-        //    System.out.println(Arrays.toString(term));
-        //}
+
         return terms;
     }
-
+    private boolean isAPositive(){ //To
+        return true;
+    }
 
 }

@@ -1,8 +1,4 @@
 import java.io.IOException;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Locale;
 
 public class TpNote {
     public static void main(String[] args) throws IOException {
