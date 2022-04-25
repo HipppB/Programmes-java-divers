@@ -112,7 +112,7 @@ public class DeckOfCards {
     public int countBlack() {
         int total = 0;
         for (Card card: this.deck) {
-            if(card.isBlack()) {
+            //if(card.isBlack()) {
                 switch (card.getRank()) {
                 case 11, 12, 13:
                     total += 10;
@@ -123,11 +123,11 @@ public class DeckOfCards {
                 default:
                     total += card.getRank();
                 }
-            }
+            //}
         }
         return total;
     }
-    public ArrayList getDeck() {
+    public ArrayList getDeck() { // dev function
         return this.deck;
     }
 
