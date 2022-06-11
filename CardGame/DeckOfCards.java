@@ -1,6 +1,7 @@
 package CardGame;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class DeckOfCards {
@@ -85,18 +86,6 @@ public class DeckOfCards {
     }
 
 
-    public String toString() {
-        String result = "";
-        switch (deckState) {
-            case face -> result = this.deck.get(0).toString();
-            case unfolded -> {
-                for (Card card: this.deck) {
-                    result = result + card.toString() + " ";
-                }
-            }
-        }
-        return result;
-    }
     public Card pickRandom() {
         try {
             int randomNum = ThreadLocalRandom.current().nextInt(0, this.deck.size());
@@ -111,20 +100,42 @@ public class DeckOfCards {
     }
     public int countBlack() {
         int total = 0;
+        int numberOfAce = 0;
         for (Card card: this.deck) {
-            //if(card.isBlack()) {
                 switch (card.getRank()) {
                 case 11, 12, 13:
                     total += 10;
                     break;
                 case 1:
-                    total += 11;
+                    numberOfAce += 1;
+                    //Scanner scanner = new Scanner(System.in);
+                    //String line = "";
+                    //while (!line.contentEquals("Y") && !line.contentEquals("N")) {
+                    //    System.out.println("Count Ace as 11 ? (Y/N)");
+                    //    line = scanner.nextLine();
+                    //    if(!line.contentEquals("Y") && !line.contentEquals("N")) {
+                    //        System.out.println("Invalid input");
+                    //    }
+                    //}
+                    //if(line.contentEquals("Y")) {
+                    //    total += 11;
+                    //} else {
+                    //    total += 1;
+                    //}
                     break;
                 default:
                     total += card.getRank();
                 }
-            //}
         }
+
+        if (numberOfAce > 0) {
+            if (total + numberOfAce - 1 + 11 <= 21) {
+                total += 11;
+                numberOfAce -= 1;
+            }
+            total += numberOfAce;
+        }
+
         return total;
     }
     public ArrayList getDeck() { // dev function
@@ -146,5 +157,32 @@ public class DeckOfCards {
             System.out.println(card.toString());
         }
     }
+
+
+    public String toString() {
+        String result = "";
+        switch (deckState) {
+            case face -> result = this.deck.get(0).toString();
+            case unfolded -> {
+                for (Card card: this.deck) {
+                    result = result + card.toString() + " ";
+                }
+            }
+        }
+        return result;
+    }
+    public Card pickCardOnTop() {
+        int cardPicked = 0;
+        if(deckState == State.underside) {
+            cardPicked = this.deck.size() - 1;
+        }
+        Card picked = this.deck.get(cardPicked);
+        this.deck.remove(cardPicked);
+        return picked;
+
+
+    }
+
+
 
 }
